@@ -11,20 +11,26 @@ from skimage.transform import rescale
 
 
 def distance(x, X):
+    #Make sure x is a tensor, not just an array:
+    #tensor([[ 35.8645, -14.4873,  19.7296]], dtype=torch.float64)
 
-    raise NotImplementedError('distance function not implemented!')
+    return torch.cdist(x, X)
+    
 
 def distance_batch(x, X):
-    raise NotImplementedError('distance_batch function not implemented!')
+    return torch.cdist(x, X)
 
 def gaussian(dist, bandwidth):
-    raise NotImplementedError('gaussian function not implemented!')
+    #Bandwith parameter is squared, then doubled and divides the distance, all wrapped in an exponent function.
+    
+    return torch.exp(-(2/bandwidth)**2 * dist)
 
 def update_point(weight, X):
-    raise NotImplementedError('update_point function not implemented!')
+
+    return torch.sum(weight*X) / torch.sum(weight)
 
 def update_point_batch(weight, X):
-    raise NotImplementedError('update_point_batch function not implemented!')
+    return torch.sum(weight*X) / torch.sum(weight)
 
 def meanshift_step(X, bandwidth=2.5):
     X_ = X.clone()
@@ -35,7 +41,7 @@ def meanshift_step(X, bandwidth=2.5):
     return X_
 
 def meanshift_step_batch(X, bandwidth=2.5):
-    raise NotImplementedError('meanshift_step_batch function not implemented!')
+    pass
 
 def meanshift(X):
     X = X.clone()
