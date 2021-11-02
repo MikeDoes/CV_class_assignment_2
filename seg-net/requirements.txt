@@ -1,0 +1,4 @@
+scipy
+tensorboardX
+tensorboard
+scikit-image
