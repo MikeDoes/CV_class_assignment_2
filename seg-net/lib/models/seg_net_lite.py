@@ -101,9 +101,10 @@ class SegNetLite(nn.Module):
 
     def forward(self, x):
         indices = []
+        relu_out = x
         for i in range(4):
-            conv_output = self.layers_conv_down[i](x)
-            pooled_out, temp_indices = self.layers_conv_down[i](conv_output)
+            conv_output = self.layers_conv_down[i](relu_out)
+            pooled_out, temp_indices = self.layers_pooling[i](conv_output)
             indices += [temp_indices]
             normalised_out = self.layers_bn_down(pooled_out)
             relu_out = self.relu(normalised_out)
