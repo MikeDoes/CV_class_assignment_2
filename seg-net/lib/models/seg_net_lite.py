@@ -83,7 +83,7 @@ class SegNetLite(nn.Module):
                         nn.Conv2d(in_channels = 64, out_channels= 32, kernel_size = (1, 1)),
                         nn.Conv2d(in_channels = 32, out_channels= 32, kernel_size = (1, 1))
         ]
-        layers_bn_up = [nn.BatchNorm2d(num_features= 256), nn.BatchNorm2d(num_features= 128), nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 32)]
+        layers_bn_up = [nn.BatchNorm2d(num_features= 128), nn.BatchNorm2d(num_features= 64), nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 32)]
         layers_unpooling = [nn.MaxUnpool2d(2), nn.MaxUnpool2d(2), nn.MaxUnpool2d(2), nn.MaxUnpool2d(2)]
 
 
