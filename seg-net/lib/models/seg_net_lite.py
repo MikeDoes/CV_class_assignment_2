@@ -43,7 +43,7 @@ class SegNetLite(nn.Module):
         # nn.ReLU(inplace=False)
         # nn.MaxPool2d(kernel_size, stride=None, padding=0, dilation=1, return_indices=False, ceil_mode=False)
 
-        filter_size = (2,2)
+        filter_size = (3,3)
 
         layers_conv_down = [nn.Conv2d(in_channels = input_size, out_channels= 32,  kernel_size = filter_size, stride=1,padding='same'), 
                             nn.Conv2d(in_channels = 32, out_channels= 64,  kernel_size = filter_size, stride=1,padding='same'), 
