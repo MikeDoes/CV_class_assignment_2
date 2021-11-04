@@ -51,7 +51,7 @@ class SegNetLite(nn.Module):
                             nn.Conv2d(in_channels = 128, out_channels= 256, kernel_size = (1, 1))]
                             
 
-        layers_bn_down = [nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 64, nn.BatchNorm2d(num_features= 128)), nn.BatchNorm2d(num_features= 256)]
+        layers_bn_down = [nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 64), nn.BatchNorm2d(num_features= 128), nn.BatchNorm2d(num_features= 256)]
         
         layers_pooling = [nn.MaxPool2d(kernel_size= 2, return_indices=True), nn.MaxPool2d(kernel_size= 2, return_indices=True), nn.MaxPool2d(kernel_size= 2, return_indices=True), nn.MaxPool2d(kernel_size= 2, return_indices=True)]
 
@@ -74,7 +74,7 @@ class SegNetLite(nn.Module):
                             nn.Conv2d(in_channels = 128, out_channels= 256, kernel_size = (1, 1))]
                             
 
-        layers_bn_down = [nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 64, nn.BatchNorm2d(num_features= 128)), nn.BatchNorm2d(num_features= 256)]
+        layers_bn_down = [nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 64), nn.BatchNorm2d(num_features= 128), nn.BatchNorm2d(num_features= 256)]
         
         layers_pooling = [nn.MaxPool2d(kernel_size= (2,2), return_indices=True), nn.MaxPool2d(kernel_size= (2,2), return_indices=True), nn.MaxPool2d(kernel_size= (2,2), return_indices=True), nn.MaxPool2d(kernel_size= (2,2), return_indices=True)]
 
