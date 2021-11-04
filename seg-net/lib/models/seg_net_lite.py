@@ -94,7 +94,6 @@ class SegNetLite(nn.Module):
         self.layers_unpooling = nn.ModuleList(layers_unpooling)
 
         self.relu = nn.ReLU(True)
-
         # Implement a final 1x1 convolution to to get the logits of 11 classes (background + 10 digits)
 
         self.final_conv = nn.Conv2d(in_channels = 32, out_channels= 11, kernel_size = (1, 1))
@@ -110,6 +109,7 @@ class SegNetLite(nn.Module):
             relu_out = self.relu(normalised_out)
         
         for i in range(4):
+            print(indices.shape[3-i])
             pooled_out = self.layers_unpooling[i](relu_out, indices[3-i])
             conv_output = self.layers_conv_up[i](pooled_out)
 
