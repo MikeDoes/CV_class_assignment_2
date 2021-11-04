@@ -76,7 +76,7 @@ class SegNetLite(nn.Module):
 
         layers_bn_down = [nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 64), nn.BatchNorm2d(num_features= 128), nn.BatchNorm2d(num_features= 256)]
         
-        layers_pooling = [nn.MaxPool2d(kernel_size= 2, return_indices=True), nn.MaxPool2d(kernel_size= 2, return_indices=True), nn.MaxPool2d(kernel_size= 2, return_indices=True), nn.MaxPool2d(kernel_size= 2, return_indices=True)]
+        layers_pooling = [nn.MaxPool2d(kernel_size= (2,2), return_indices=True), nn.MaxPool2d(kernel_size= (2,2), return_indices=True), nn.MaxPool2d(kernel_size= (2,2), return_indices=True), nn.MaxPool2d(kernel_size= (2,2), return_indices=True)]
 
         layers_conv_up = [nn.Conv2d(in_channels = 256, out_channels= 128, kernel_size = (1, 1)),
                         nn.Conv2d(in_channels = 128, out_channels= 64, kernel_size = (1, 1)),
@@ -84,7 +84,7 @@ class SegNetLite(nn.Module):
                         nn.Conv2d(in_channels = 32, out_channels= 32, kernel_size = (1, 1))
         ]
         layers_bn_up = [nn.BatchNorm2d(num_features= 128), nn.BatchNorm2d(num_features= 64), nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 32)]
-        layers_unpooling = [nn.MaxUnpool2d(2), nn.MaxUnpool2d(2), nn.MaxUnpool2d(2), nn.MaxUnpool2d(2)]
+        layers_unpooling = [nn.MaxUnpool2d((2,2)), nn.MaxUnpool2d((2,2)), nn.MaxUnpool2d((2,2)), nn.MaxUnpool2d((2,2))]
 
 
         # Convert Python list to nn.ModuleList, so that PyTorch's autograd
