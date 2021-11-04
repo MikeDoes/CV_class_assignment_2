@@ -68,10 +68,10 @@ class SegNetLite(nn.Module):
         # 256 x 4 x 4 (input) -> 128 x 8 x 8 -> 64 x 16 x 16 -> 32 x 32 x 32 -> 32 x 64 x 64
         # each block should consist of: MaxUnpool2d->Conv2d->BatchNorm2d->ReLU
 
-        layers_conv_down = [nn.Conv2d(in_channels = input_size, out_channels=, 32, kernel_size = (1, 1)), 
-                            nn.Conv2d(in_channels = 32, out_channels=, 64, kernel_size = (1, 1)), 
-                            nn.Conv2d(in_channels = 64, out_channels=, 128, kernel_size = (1, 1)), 
-                            nn.Conv2d(in_channels = 128, out_channels=, 256, kernel_size = (1, 1))]
+        layers_conv_down = [nn.Conv2d(in_channels = input_size, out_channels= 32, kernel_size = (1, 1)), 
+                            nn.Conv2d(in_channels = 32, out_channels= 64, kernel_size = (1, 1)), 
+                            nn.Conv2d(in_channels = 64, out_channels= 128, kernel_size = (1, 1)), 
+                            nn.Conv2d(in_channels = 128, out_channels= 256, kernel_size = (1, 1))]
                             
 
         layers_bn_down = [nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 64, nn.BatchNorm2d(num_features= 128)), nn.BatchNorm2d(num_features= 256)]
