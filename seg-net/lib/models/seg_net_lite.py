@@ -110,6 +110,7 @@ class SegNetLite(nn.Module):
             relu_out = self.relu(normalised_out)
         
         for i in range(4):
+            print('Block #', i)
             pooled_out = self.layers_unpooling[i](relu_out, indices[3-i])
             conv_output = self.layers_conv_up[i](pooled_out)
 
