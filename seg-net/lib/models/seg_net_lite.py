@@ -37,10 +37,24 @@ class SegNetLite(nn.Module):
         # following output dimension (igoring batch dimension):
         # 3 x 64 x 64 (input) -> 32 x 32 x 32 -> 64 x 16 x 16 -> 128 x 8 x 8 -> 256 x 4 x 4
         # each block should consist of: Conv2d->BatchNorm2d->ReLU->MaxPool2d
-        layers_conv_down = []
-        layers_bn_down = []
-        layers_pooling = []
-        raise NotImplementedError('Downsampling layers are not implemented!')
+
+        # nn.Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, groups=1, bias=True, padding_mode='zeros', device=None, dtype=None)
+        # nn.BatchNorm2d(num_features, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True, device=None, dtype=None)
+        # nn.ReLU(inplace=False)
+        # nn.MaxPool2d(kernel_size, stride=None, padding=0, dilation=1, return_indices=False, ceil_mode=False)
+
+        
+
+        layers_conv_down = [nn.Conv2d(in_channels = input_size, out_channels=, 32, kernel_size = (1, 1)), 
+                            nn.Conv2d(in_channels = 32, out_channels= 64, kernel_size = (1, 1)), 
+                            nn.Conv2d(in_channels = 64, out_channels= 128, kernel_size = (1, 1)), 
+                            nn.Conv2d(in_channels = 128, out_channels= 256, kernel_size = (1, 1))]
+                            
+
+        layers_bn_down = [nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 64, nn.BatchNorm2d(num_features= 128)), nn.BatchNorm2d(num_features= 256)]
+        
+        layers_pooling = [nn.MaxPool2d(kernel_size= 2, return_indices=True), nn.MaxPool2d(kernel_size= 2, return_indices=True), nn.MaxPool2d(kernel_size= 2, return_indices=True), nn.MaxPool2d(kernel_size= 2, return_indices=True)]
+
 
         # Convert Python list to nn.ModuleList, so that PyTorch's autograd
         # package can track gradients and update parameters of these layers
@@ -53,10 +67,25 @@ class SegNetLite(nn.Module):
         # following output dimension (igoring batch dimension):
         # 256 x 4 x 4 (input) -> 128 x 8 x 8 -> 64 x 16 x 16 -> 32 x 32 x 32 -> 32 x 64 x 64
         # each block should consist of: MaxUnpool2d->Conv2d->BatchNorm2d->ReLU
-        layers_conv_up = []
-        layers_bn_up = []
-        layers_unpooling = []
-        raise NotImplementedError('Upsampling layers are not implemented!')
+
+        layers_conv_down = [nn.Conv2d(in_channels = input_size, out_channels=, 32, kernel_size = (1, 1)), 
+                            nn.Conv2d(in_channels = 32, out_channels=, 64, kernel_size = (1, 1)), 
+                            nn.Conv2d(in_channels = 64, out_channels=, 128, kernel_size = (1, 1)), 
+                            nn.Conv2d(in_channels = 128, out_channels=, 256, kernel_size = (1, 1))]
+                            
+
+        layers_bn_down = [nn.BatchNorm2d(num_features= 32), nn.BatchNorm2d(num_features= 64, nn.BatchNorm2d(num_features= 128)), nn.BatchNorm2d(num_features= 256)]
+        
+        layers_pooling = [nn.MaxPool2d(kernel_size= (2,2), return_indices=True), nn.MaxPool2d(kernel_size= (2,2), return_indices=True), nn.MaxPool2d(kernel_size= (2,2), return_indices=True), nn.MaxPool2d(kernel_size= (2,2), return_indices=True)]
+
+        layers_conv_up = [nn.Conv2d(in_channels = 256, out_channels= 128, kernel_size = (1, 1)),
+                        nn.Conv2d(in_channels = 128, out_channels= 64, kernel_size = (1, 1)),
+                        nn.Conv2d(in_channels = 64, out_channels= 32, kernel_size = (1, 1)),
+                        nn.Conv2d(in_channels = 32, out_channels= 32, kernel_size = (1, 1))
+        ]
+        layers_bn_up = [nn.BatchNorm2d(num_features= 256), nn.BatchNorm2d(num_features= 128), nn.BatchNorm2d(num_features= 64), nn.BatchNorm2d(num_features= 32)]
+        layers_unpooling = [nn.MaxUnpool2d(2), nn.MaxUnpool2d(2), nn.MaxUnpool2d(2), nn.MaxUnpool2d(2)]
+
 
         # Convert Python list to nn.ModuleList, so that PyTorch's autograd
         # can track gradients and update parameters of these layers
@@ -67,11 +96,28 @@ class SegNetLite(nn.Module):
         self.relu = nn.ReLU(True)
 
         # Implement a final 1x1 convolution to to get the logits of 11 classes (background + 10 digits)
-        raise NotImplementedError('Final convolution layer is not implemented!')
+
+        self.final_conv = nn.Conv2d(in_channels = 32, out_channels= 11, kernel_size = (1, 1)),
 
     def forward(self, x):
-        raise NotImplementedError('Forward function not implemented!')
+        indices = []
+        for i in range(4):
+            conv_output = self.layers_conv_down[i](x)
+            pooled_out, temp_indices = self.layers_conv_down[i](conv_output)
+            indices += [temp_indices]
+            normalised_out = self.layers_bn_down(pooled_out)
+            relu_out = self.relu(normalised_out)
+        
+        for i in range(3, -1, -1):
+            pooled_out = self.layers_unpooling[i](relu_out)
+            conv_output = self.layers_conv_up[i](pooled_out, indices[i])
 
+            normalised_out = self.layers_bn_up(pooled_out)
+            relu_out = self.relu(normalised_out)
+
+        return self.final_conv(relu_out)
+        
+            
 
 def get_seg_net(**kwargs):
 
