@@ -106,14 +106,14 @@ class SegNetLite(nn.Module):
             conv_output = self.layers_conv_down[i](relu_out)
             pooled_out, temp_indices = self.layers_pooling[i](conv_output)
             indices += [temp_indices]
-            normalised_out = self.layers_bn_down(pooled_out)
+            normalised_out = self.layers_bn_down[i](pooled_out)
             relu_out = self.relu(normalised_out)
         
         for i in range(3, -1, -1):
             pooled_out = self.layers_unpooling[i](relu_out)
             conv_output = self.layers_conv_up[i](pooled_out, indices[i])
 
-            normalised_out = self.layers_bn_up(pooled_out)
+            normalised_out = self.layers_bn_up[i](pooled_out)
             relu_out = self.relu(normalised_out)
 
         return self.final_conv(relu_out)
