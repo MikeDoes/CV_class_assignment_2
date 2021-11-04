@@ -45,7 +45,7 @@ class SegNetLite(nn.Module):
 
         
 
-        layers_conv_down = [nn.Conv2d(in_channels = input_size, out_channels=, 32, kernel_size = (1, 1)), 
+        layers_conv_down = [nn.Conv2d(in_channels = input_size, out_channels= 32, kernel_size = (1, 1)), 
                             nn.Conv2d(in_channels = 32, out_channels= 64, kernel_size = (1, 1)), 
                             nn.Conv2d(in_channels = 64, out_channels= 128, kernel_size = (1, 1)), 
                             nn.Conv2d(in_channels = 128, out_channels= 256, kernel_size = (1, 1))]
